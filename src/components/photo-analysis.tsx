@@ -173,10 +173,10 @@ export function PhotoAnalysis() {
         className="border-2 border-dashed rounded-lg p-12 text-center cursor-pointer hover:border-primary transition-colors"
         onClick={() => fileInputRef.current?.click()}
       >
-        <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" />
-        <h3 className="mt-4 text-lg font-semibold">Upload your photo</h3>
+        <Camera className="mx-auto h-12 w-12 text-muted-foreground" />
+        <h3 className="mt-4 text-lg font-semibold">Upload or Take a Photo</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Click to browse or drag and drop an image of your room.
+          Tap here to select an image from your library or use your camera.
         </p>
         <input
           ref={fileInputRef}
@@ -184,6 +184,7 @@ export function PhotoAnalysis() {
           className="hidden"
           onChange={handleFileChange}
           accept="image/*"
+          capture="environment"
         />
       </div>
     );
