@@ -7,6 +7,10 @@ import { db } from '@/lib/firebase';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 async function saveScore(score: number) {
+  if (!db) {
+    console.warn('Firestore is not configured. Skipping score saving.');
+    return;
+  }
   try {
     // The app doesn't have users, so we'll use a randomly generated name.
     // In a real app, you'd get the authenticated user's ID and name.

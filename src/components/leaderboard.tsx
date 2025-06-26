@@ -5,6 +5,7 @@ import {
   CardHeader,
   CardTitle,
   CardContent,
+  CardDescription,
 } from '@/components/ui/card';
 import {
   Table,
@@ -24,14 +25,22 @@ import {
   limit,
   onSnapshot,
 } from 'firebase/firestore';
-import { Trophy } from 'lucide-react';
+import { Trophy, AlertTriangle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export function Leaderboard() {
   const [data, setData] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isDbConfigured, setIsDbConfigured] = useState(false);
 
   useEffect(() => {
+    if (!db) {
+      setLoading(false);
+      setIsDbConfigured(false);
+      return;
+    }
+    setIsDbConfigured(true);
+
     try {
       const q = query(
         collection(db, 'leaderboard'),
@@ -73,6 +82,26 @@ export function Leaderboard() {
       setLoading(false);
     }
   }, []);
+
+  if (!isDbConfigured) {
+    return (
+      <Card>
+        <CardHeader className="flex flex-row items-center gap-2">
+          <AlertTriangle className="w-6 h-6 text-destructive" />
+          <CardTitle className="font-headline text-destructive">
+            Classifica non disponibile
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription className="text-destructive">
+            Per abilitare la classifica, per favore imposta le tue credenziali Firebase nel file `.env`.
+            Assicurati che il tuo progetto Firebase abbia Firestore abilitato.
+          </CardDescription>
+        </CardContent>
+      </Card>
+    );
+  }
+
 
   return (
     <Card>
