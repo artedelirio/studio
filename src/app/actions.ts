@@ -37,6 +37,11 @@ export async function analyzePhoto(photoDataUri: string) {
     };
   } catch (e) {
     if (e instanceof Error) {
+      if (e.message.includes('FAILED_PRECONDITION')) {
+        throw new Error(
+          'Manca la chiave API di Google. Assicurati di averla impostata correttamente nel tuo file .env.'
+        );
+      }
       // Prepend a user-friendly message to the error from the AI flow.
       throw new Error(`Analisi IA fallita: ${e.message}`);
     }
