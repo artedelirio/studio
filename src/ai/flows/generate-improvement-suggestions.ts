@@ -28,7 +28,7 @@ export type GenerateImprovementSuggestionsInput = z.infer<
 const GenerateImprovementSuggestionsOutputSchema = z.object({
   suggestions: z
     .array(z.string())
-    .describe('A list of suggestions to improve the orderliness score.'),
+    .describe("Un elenco di suggerimenti per migliorare il punteggio di ordine."),
 });
 export type GenerateImprovementSuggestionsOutput = z.infer<
   typeof GenerateImprovementSuggestionsOutputSchema
@@ -44,16 +44,16 @@ const prompt = ai.definePrompt({
   name: 'generateImprovementSuggestionsPrompt',
   input: {schema: GenerateImprovementSuggestionsInputSchema},
   output: {schema: GenerateImprovementSuggestionsOutputSchema},
-  prompt: `You are an AI assistant designed to provide users with suggestions on how to improve the orderliness of a space in a photo.
+  prompt: `Sei un assistente AI progettato per fornire agli utenti suggerimenti su come migliorare l'ordine di uno spazio in una foto.
 
-You will analyze the photo and the current orderliness score, then provide a list of actionable suggestions to improve the score.
+Analizzerai la foto e il punteggio di ordine attuale, quindi fornirai un elenco di suggerimenti pratici per migliorare il punteggio.
 
-Consider factors such as clutter, organization, and overall aesthetics.
+Considera fattori come il disordine, l'organizzazione e l'estetica generale. Tutti i suggerimenti devono essere in italiano.
 
-Photo: {{media url=photoDataUri}}
-Current Score: {{currentScore}}
+Foto: {{media url=photoDataUri}}
+Punteggio attuale: {{currentScore}}
 
-Suggestions:`,
+Suggerimenti:`,
 });
 
 const generateImprovementSuggestionsFlow = ai.defineFlow(

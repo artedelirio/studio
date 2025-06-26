@@ -28,17 +28,17 @@ const AnalyzeImageOrderOutputSchema = z.object({
     .min(1)
     .max(5)
     .describe(
-      'The order rating of the room in the image, on a scale of 1 to 5, with decimals allowed.'
+      "La valutazione dell'ordine della stanza nell'immagine, su una scala da 1 a 5, con decimali consentiti."
     ),
   isValid: z
     .boolean()
     .describe(
-      'Whether the photo is valid and contains enough information to assess order.'
+      "Indica se la foto è valida e contiene informazioni sufficienti per valutare l'ordine."
     ),
   reason: z
     .string()
     .optional()
-    .describe('The detailed reason/explanation of the rating or invalid photo.'),
+    .describe('La ragione/spiegazione dettagliata della valutazione o della foto non valida.'),
 });
 export type AnalyzeImageOrderOutput = z.infer<typeof AnalyzeImageOrderOutputSchema>;
 
@@ -50,18 +50,18 @@ const analyzeImageOrderPrompt = ai.definePrompt({
   name: 'analyzeImageOrderPrompt',
   input: {schema: AnalyzeImageOrderInputSchema},
   output: {schema: AnalyzeImageOrderOutputSchema},
-  prompt: `You are an AI assistant designed to evaluate the level of order in a photo of a room.
+  prompt: `Sei un assistente AI progettato per valutare il livello di ordine in una foto di una stanza.
 
-You will receive a photo of a room and provide a rating between 1 and 5 (with decimals) indicating the perceived level of order.
+Riceverai una foto di una stanza e fornirai una valutazione tra 1 e 5 (con decimali) che indica il livello di ordine percepito.
 
-- 1 indicates a very disordered room.
-- 5 indicates a very orderly room.
+- 1 indica una stanza molto disordinata.
+- 5 indica una stanza molto ordinata.
 
-If the photo does not clearly show a room or the room is not clearly visible, set isValid to false and provide a reason.
+Se la foto non mostra chiaramente una stanza o la stanza non è ben visibile, imposta isValid su false e fornisci una motivazione.
 
-Photo: {{media url=photoDataUri}}
+Foto: {{media url=photoDataUri}}
 
-Please provide your rating and explanation.`,
+Fornisci la tua valutazione e spiegazione in italiano.`,
 });
 
 const analyzeImageOrderFlow = ai.defineFlow(

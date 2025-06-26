@@ -11,7 +11,7 @@ export default function Home() {
         </div>
       </main>
       <footer className="text-center p-4 text-muted-foreground text-sm">
-        <p>Built with Next.js and ❤️</p>
+        <p>Costruito con Next.js e ❤️</p>
       </footer>
     </div>
   );

@@ -64,7 +64,7 @@ export function PhotoAnalysis() {
         e instanceof Error ? e.message : 'An unexpected error occurred.';
       setError(errorMessage);
       toast({
-        title: 'Analysis Failed',
+        title: 'Analisi Fallita',
         description: errorMessage,
         variant: 'destructive',
       });
@@ -89,9 +89,9 @@ export function PhotoAnalysis() {
       return (
         <div className="text-center p-8 flex flex-col items-center gap-4">
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
-          <h3 className="text-lg font-semibold">Analyzing your photo...</h3>
+          <h3 className="text-lg font-semibold">Analisi della foto in corso...</h3>
           <p className="text-muted-foreground">
-            Our AI is evaluating the orderliness of your space. Please wait.
+            La nostra IA sta valutando l'ordine del tuo spazio. Attendere prego.
           </p>
         </div>
       );
@@ -101,11 +101,11 @@ export function PhotoAnalysis() {
       return (
         <div className="text-center p-8 flex flex-col items-center gap-4 text-destructive">
           <AlertTriangle className="h-12 w-12" />
-          <h3 className="text-lg font-semibold">An Error Occurred</h3>
+          <h3 className="text-lg font-semibold">Si è verificato un errore</h3>
           <p className="max-w-md">{error}</p>
           <Button onClick={handleReset}>
             <RotateCcw className="mr-2 h-4 w-4" />
-            Try Again
+            Riprova
           </Button>
         </div>
       );
@@ -123,13 +123,13 @@ export function PhotoAnalysis() {
             )}
             <Button onClick={handleReset} variant="outline">
               <Camera className="mr-2 h-4 w-4" />
-              Analyze Another Photo
+              Analizza un'altra foto
             </Button>
           </div>
           <div>
             <h3 className="text-xl font-headline font-semibold mb-4 flex items-center gap-2">
               <Lightbulb className="h-6 w-6 text-accent" />
-              Improvement Suggestions
+              Suggerimenti di miglioramento
             </h3>
             <ul className="space-y-3">
               {result.suggestions.map((suggestion, index) => (
@@ -149,7 +149,7 @@ export function PhotoAnalysis() {
         <div className="p-4 flex flex-col items-center gap-4">
           <Image
             src={preview}
-            alt="Photo preview"
+            alt="Anteprima foto"
             width={400}
             height={400}
             className="rounded-lg object-contain max-h-[400px] w-auto"
@@ -158,10 +158,10 @@ export function PhotoAnalysis() {
           <div className="flex gap-4">
             <Button onClick={handleSubmit}>
               <Camera className="mr-2 h-4 w-4" />
-              Analyze my photo
+              Analizza la mia foto
             </Button>
             <Button onClick={handleReset} variant="outline">
-              Choose a different one
+              Scegline un'altra
             </Button>
           </div>
         </div>
@@ -174,9 +174,9 @@ export function PhotoAnalysis() {
         onClick={() => fileInputRef.current?.click()}
       >
         <Camera className="mx-auto h-12 w-12 text-muted-foreground" />
-        <h3 className="mt-4 text-lg font-semibold">Upload or Take a Photo</h3>
+        <h3 className="mt-4 text-lg font-semibold">Carica o scatta una foto</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          Tap here to select an image from your library or use your camera.
+          Tocca qui per selezionare un'immagine dalla tua libreria o usare la fotocamera.
         </p>
         <input
           ref={fileInputRef}
@@ -194,10 +194,10 @@ export function PhotoAnalysis() {
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="font-headline text-2xl">
-          Daily Orderliness Check
+          Controllo Quotidiano dell'Ordine
         </CardTitle>
         <CardDescription>
-          Upload a photo of a room to get its AI-powered orderliness score.
+          Carica la foto di una stanza per ottenere il suo punteggio di ordine basato sull'IA.
         </CardDescription>
       </CardHeader>
       <CardContent>{renderContent()}</CardContent>

@@ -60,9 +60,12 @@ export function ScoreDisplay({ score }: { score: number }) {
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
         <span className="text-4xl font-bold text-foreground font-headline">
-          {displayScore.toFixed(2)}
+          {displayScore.toLocaleString('it-IT', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}
         </span>
-        <span className="text-sm text-muted-foreground">/ 5.00</span>
+        <span className="text-sm text-muted-foreground">/ 5,00</span>
       </div>
     </div>
   );

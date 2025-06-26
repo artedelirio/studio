@@ -17,17 +17,17 @@ const DetectInvalidPhotoInputSchema = z.object({
   photoDataUri: z
     .string()
     .describe(
-      'A photo to be analyzed, as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.' 
+      'A photo to be analyzed, as a data URI that must include a MIME type and use Base64 encoding. Expected format: \'data:<mimetype>;base64,<encoded_data>\'.'
     ),
 });
 export type DetectInvalidPhotoInput = z.infer<typeof DetectInvalidPhotoInputSchema>;
 
 const DetectInvalidPhotoOutputSchema = z.object({
-  isValid: z.boolean().describe('Whether the photo is valid for analysis.'),
+  isValid: z.boolean().describe("Indica se la foto è valida per l'analisi."),
   reason: z
     .string()
     .optional()
-    .describe('The reason why the photo is invalid, if applicable.'),
+    .describe('La ragione per cui la foto non è valida, se applicabile.'),
 });
 export type DetectInvalidPhotoOutput = z.infer<typeof DetectInvalidPhotoOutputSchema>;
 
@@ -39,16 +39,15 @@ const detectInvalidPhotoPrompt = ai.definePrompt({
   name: 'detectInvalidPhotoPrompt',
   input: {schema: DetectInvalidPhotoInputSchema},
   output: {schema: DetectInvalidPhotoOutputSchema},
-  prompt: `You are an AI assistant that determines if a given photo is valid for analysis.
+  prompt: `Sei un assistente AI che determina se una data foto è valida per l'analisi.
 
-  A photo is considered invalid if it does not clearly show a room, or if the photo is blurry, 
-  too dark, or otherwise unsuitable for determining the level of order in the room.
+  Una foto è considerata non valida se non mostra chiaramente una stanza, o se la foto è sfocata, troppo scura, o altrimenti non idonea per determinare il livello di ordine nella stanza.
 
-  Analyze the following photo and determine if it is valid for analysis:
+  Analizza la seguente foto e determina se è valida per l'analisi:
 
-  Photo: {{media url=photoDataUri}}
+  Foto: {{media url=photoDataUri}}
 
-  Respond with a JSON object that has an \"isValid\" boolean field.  If the photo is not valid, explain why in the \"reason\" field.
+  Rispondi con un oggetto JSON che ha un campo booleano "isValid". Se la foto non è valida, spiega perché nel campo "reason". Tutte le tue risposte, inclusa la motivazione, devono essere in italiano.
   `,
 });
 

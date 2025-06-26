@@ -6,7 +6,7 @@ import { generateImprovementSuggestions } from '@/ai/flows/generate-improvement-
 
 export async function analyzePhoto(photoDataUri: string) {
   if (!photoDataUri) {
-    throw new Error('No photo provided.');
+    throw new Error('Nessuna foto fornita.');
   }
 
   try {
@@ -14,14 +14,14 @@ export async function analyzePhoto(photoDataUri: string) {
     if (!invalidCheck.isValid) {
       throw new Error(
         invalidCheck.reason ||
-          'Invalid photo provided. Please provide a clear image of a room.'
+          "Foto non valida. Fornisci un'immagine chiara di una stanza."
       );
     }
 
     const orderAnalysis = await analyzeImageOrder({ photoDataUri });
     if (!orderAnalysis.isValid) {
       throw new Error(
-        orderAnalysis.reason || 'Could not analyze photo. Please try another one.'
+        orderAnalysis.reason || 'Impossibile analizzare la foto. Per favore, provane un\'altra.'
       );
     }
 
@@ -38,8 +38,8 @@ export async function analyzePhoto(photoDataUri: string) {
   } catch (e) {
     if (e instanceof Error) {
       // Prepend a user-friendly message to the error from the AI flow.
-      throw new Error(`AI analysis failed: ${e.message}`);
+      throw new Error(`Analisi IA fallita: ${e.message}`);
     }
-    throw new Error('An unknown error occurred during AI analysis.');
+    throw new Error('Si è verificato un errore sconosciuto durante l\'analisi IA.');
   }
 }
