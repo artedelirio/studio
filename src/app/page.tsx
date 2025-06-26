@@ -1,7 +1,6 @@
 import { Header } from '@/components/header';
 import { PhotoAnalysis } from '@/components/photo-analysis';
 import { Leaderboard } from '@/components/leaderboard';
-import { leaderboardData } from '@/lib/mock-data';
 
 export default function Home() {
   return (
@@ -13,7 +12,7 @@ export default function Home() {
             <PhotoAnalysis />
           </div>
           <div>
-            <Leaderboard data={leaderboardData} />
+            <Leaderboard />
           </div>
         </div>
       </main>

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardHeader,
@@ -12,10 +14,66 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { LeaderboardEntry } from '@/lib/mock-data';
+import { db } from '@/lib/firebase';
+import {
+  collection,
+  query,
+  orderBy,
+  limit,
+  onSnapshot,
+} from 'firebase/firestore';
 import { Trophy } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
-export function Leaderboard({ data }: { data: LeaderboardEntry[] }) {
+export function Leaderboard() {
+  const [data, setData] = useState<LeaderboardEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+      const q = query(
+        collection(db, 'leaderboard'),
+        orderBy('score', 'desc'),
+        limit(10)
+      );
+
+      const unsubscribe = onSnapshot(
+        q,
+        (querySnapshot) => {
+          const leaderboardData: Omit<LeaderboardEntry, 'rank'>[] = [];
+          querySnapshot.forEach((doc) => {
+            const docData = doc.data();
+            leaderboardData.push({
+              id: doc.id,
+              name: docData.name,
+              score: docData.score,
+            });
+          });
+          setData(
+            leaderboardData.map((entry, index) => ({
+              ...entry,
+              rank: index + 1,
+            }))
+          );
+          setLoading(false);
+        },
+        (error) => {
+          console.error('Error fetching leaderboard:', error);
+          setLoading(false);
+        }
+      );
+      return () => unsubscribe();
+    } catch (error) {
+      console.error(
+        'Failed to connect to Firestore. Did you set up your .env file?',
+        error
+      );
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center gap-2">
@@ -23,26 +81,38 @@ export function Leaderboard({ data }: { data: LeaderboardEntry[] }) {
         <CardTitle className="font-headline">Daily Leaderboard</CardTitle>
       </CardHeader>
       <CardContent>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[50px]">Rank</TableHead>
-              <TableHead>User</TableHead>
-              <TableHead className="text-right">Score</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {data.map((entry) => (
-              <TableRow key={entry.rank}>
-                <TableCell className="font-medium">{entry.rank}</TableCell>
-                <TableCell>{entry.name}</TableCell>
-                <TableCell className="text-right font-semibold text-primary">
-                  {entry.score.toFixed(2)}
-                </TableCell>
-              </TableRow>
+        {loading ? (
+          <div className="space-y-2">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-8 w-8" />
+                <Skeleton className="h-4 w-1/2" />
+                <Skeleton className="h-4 w-1/4 ml-auto" />
+              </div>
             ))}
-          </TableBody>
-        </Table>
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[50px]">Rank</TableHead>
+                <TableHead>User</TableHead>
+                <TableHead className="text-right">Score</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.map((entry) => (
+                <TableRow key={entry.id}>
+                  <TableCell className="font-medium">{entry.rank}</TableCell>
+                  <TableCell>{entry.name}</TableCell>
+                  <TableCell className="text-right font-semibold text-primary">
+                    {entry.score.toFixed(2)}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </CardContent>
     </Card>
   );
